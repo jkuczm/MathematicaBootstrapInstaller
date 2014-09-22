@@ -38,6 +38,9 @@ Unprotect["`*"]
 Begin["`Private`"]
 
 
+Needs["Utilities`URLTools`"]
+
+
 (* ::Subsection:: *)
 (*BootstrapInstall*)
 
@@ -61,7 +64,8 @@ BootstrapInstall[
 		{
 			installFunction = OptionValue["InstallFunction"],
 			additionalFailureMessage = OptionValue["AdditionalFailureMessage"],
-			$PIImportResult
+			$PIImportResult,
+			fetchURLOldHeaders
 		}
 		,
 		
@@ -93,6 +97,36 @@ BootstrapInstall[
 				Print[additionalFailureMessage];
 			];
 		(* else *),
+		
+			If[$VersionNumber >= 10.0,
+				(*
+					In Mathematica version 10 URLFetch by default always sets
+					"Content-Type" header to
+					"application/x-www-form-urlencoded" which makes Amazon S3
+					service, used by GitHub, return "SignatureDoesNotMatch"
+					error.
+					
+					To prevent it manually set empty "Content-Type" in
+					default options of
+					Utilities`URLTools`Private`FetchURLInternal. This
+					function is called by Utilities`URLTools`FetchURL which is
+					used in ProjectInstall and passes options to URLFetch.
+					
+					It would be better to set it on public function
+					Utilities`URLTools`FetchURL, but it's deault options are
+					not passed to Utilities`URLTools`Private`FetchURLInternal.
+				*)
+				fetchURLOldHeaders =
+					OptionValue[
+						Utilities`URLTools`Private`FetchURLInternal,
+						"RequestHeaderFields"
+					];
+				SetOptions[
+					Utilities`URLTools`Private`FetchURLInternal,
+					"RequestHeaderFields" -> {"Content-Type" -> ""}
+				];
+			];
+
 			If[dependencies =!= {},
 				Print["Installing " <> name <> " dependencies:"];
 				installFunction @@@ dependencies;	
@@ -100,6 +134,14 @@ BootstrapInstall[
 			
 			Print["Installing " <> name <> ":"];
 			installFunction[name, url];
+		
+			If[$VersionNumber >= 10.0,
+				(* Restore original value of "Headers" option. *)
+				SetOptions[
+					Utilities`URLTools`Private`FetchURLInternal,
+					"RequestHeaderFields" -> fetchURLOldHeaders
+				];
+			];
 		];
 	]
 
