@@ -2,7 +2,7 @@
 
 Package simplifying creation of online bootstrap installer scripts.
 
-[![latest release](http://img.shields.io/github/release/jkuczm/MathematicaBootstrapInstaller.svg)](https://github.com/jkuczm/MathematicaBootstrapInstaller/releases/latest)
+[![release v0.1.1](http://img.shields.io/badge/release-v0.1.1-orange.svg)](https://github.com/jkuczm/MathematicaBootstrapInstaller/releases/latest)
 [![semantic versioning](http://jkuczm.github.io/media/images/SemVer-2.0.0-brightgreen.svg)](http://semver.org/spec/v2.0.0.html)
 [![license: MIT](http://jkuczm.github.io/media/images/license-MIT-blue.svg)](https://github.com/jkuczm/MathematicaBootstrapInstaller/blob/master/LICENSE)
 
@@ -20,7 +20,7 @@ Package simplifying creation of online bootstrap installer scripts.
 Following code is used as bootstrap installer script of version 1.0.0 of
 `TeXUtilities` package:
 ```Mathematica
-Get["https://raw.githubusercontent.com/jkuczm/MathematicaBootstrapInstaller/v0.1.0/BootstrapInstaller.m"]
+Get["https://raw.githubusercontent.com/jkuczm/MathematicaBootstrapInstaller/v0.1.1/BootstrapInstaller.m"]
 
 BootstrapInstall[
     "TeXUtilities",
@@ -42,7 +42,7 @@ Following code is used as bootstrap installer script of version 0.1.1 of
 MUnitExtras package. It installs the package together with proper versions of
 dependencies.
 ```Mathematica
-Get["https://raw.githubusercontent.com/jkuczm/MathematicaBootstrapInstaller/v0.1.0/BootstrapInstaller.m"]
+Get["https://raw.githubusercontent.com/jkuczm/MathematicaBootstrapInstaller/v0.1.1/BootstrapInstaller.m"]
 
 BootstrapInstall[
     "MUnitExtras",
